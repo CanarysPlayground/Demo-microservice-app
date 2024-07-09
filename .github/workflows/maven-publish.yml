@@ -42,7 +42,8 @@ jobs:
           git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git
           git add .
           git commit -m "First commit"
-          git push -u origin main
+          git push
+          # git push -u origin main
 
 
 
