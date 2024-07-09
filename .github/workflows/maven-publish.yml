@@ -1,7 +1,6 @@
 name: maven_build
 on: [push, workflow_dispatch]
 jobs: 
- job:
   build:
      name: Build and Install
      runs-on: ubuntu-latest 
