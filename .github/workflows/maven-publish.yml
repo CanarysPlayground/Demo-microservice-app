@@ -31,10 +31,10 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: drop
-          path: /home
+          path: /home/runner/artifact
       - run: ls -R
+      - run: cd /home/runner/artifact
       - run: |
-         cd /home \
          git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git \
          # git add . \
          git commit -m "first commit" \
