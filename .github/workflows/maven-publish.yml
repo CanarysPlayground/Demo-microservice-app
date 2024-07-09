@@ -32,9 +32,22 @@ jobs:
         with:
           name: drop
           path: ./target/myshuttledev.war
-      - run: ls -R
-      # - name: deploy here
-      # - run: 
+      - name: deploy here
+  # You may pin to the exact commit or the version.
+  # uses: tech-thinker/push-to-repo@a599ed57544bc8348c09cba83a5ffc790b2ead67
+        uses: tech-thinker/push-to-repo@v1.0.0
+        with:
+    # Source directory from the origin directory
+         source-directory: ./target/**
+    # Name of the destination username/organization
+         destination-github-username: MihirKulkarni11
+    # Destination repository
+         destination-repository-name: https://github.com/MihirKulkarni11/Deploy.git
+    # Email for the git commit
+
+          
+      
+ 
 
 
 
