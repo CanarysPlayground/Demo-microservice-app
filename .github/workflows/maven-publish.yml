@@ -43,7 +43,7 @@ jobs:
          destination-github-username: MihirKulkarni11
     # Destination repository
          destination-repository-name: https://github.com/MihirKulkarni11/Deploy.git
-         API_TOKEN_GITHUB: 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
+         entryPoint: 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
 
           
       
