@@ -30,8 +30,8 @@ jobs:
       - name: Download a Build Artifact
         uses: actions/download-artifact@v2
         with:
-          name: drop
-          path: ./target/
+          name: myshuttledev
+          path: ./target/myshuttledev.war
       - run: ls- R
       # - name: deploy here
       # - run: 
