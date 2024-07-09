@@ -35,34 +35,31 @@ jobs:
       - run: ls -R
       - run: cd /home/runner/artifact
       - run: |
-         git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git \
-         # git add . \
-         git commit -m "first commit" \
-         git branch -M main \
-         git push -u origin main \
+          git init
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git
+          git add .
+          git commit -m "First commit"
+          git branch -M main
+          git push -u origin main
+
+
+
+
+
+
+
+
 
       
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      # - run: git init
+      # - run: |
+      #    git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git \
+      #    # git add . \
+      #    git commit -m "first commit" \
+      #    git branch -M main \
+      #    git push -u origin main
       
   # # You may pin to the exact commit or the version.
   # # uses: tech-thinker/push-to-repo@a599ed57544bc8348c09cba83a5ffc790b2ead6723456
