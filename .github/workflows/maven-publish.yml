@@ -38,6 +38,7 @@ jobs:
           git init
           git config --global user.email "mihir11kulkarni@gmail.com"
           git config --global user.name "Mihir11"
+          git config --global init.defaultBranch main
           git branch -M main
           git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git
           git add .
