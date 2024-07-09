@@ -34,7 +34,7 @@ jobs:
           path: ./target/myshuttledev.war
       - name: deploy here
   # You may pin to the exact commit or the version.
-  # uses: tech-thinker/push-to-repo@a599ed57544bc8348c09cba83a5ffc790b2ead67
+  # uses: tech-thinker/push-to-repo@a599ed57544bc8348c09cba83a5ffc790b2ead6723456
         uses: tech-thinker/push-to-repo@v1.0.0
         with:
     # Source directory from the origin directory
@@ -43,7 +43,7 @@ jobs:
          destination-github-username: MihirKulkarni11
     # Destination repository
          destination-repository-name: https://github.com/MihirKulkarni11/Deploy.git
-    # Email for the git commit
+         API_TOKEN_GITHUB: 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
 
           
       
