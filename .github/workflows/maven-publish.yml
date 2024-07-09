@@ -32,8 +32,7 @@ jobs:
         with:
           name: drop
           path: ./target/myshuttledev.war
-      - run: ls -R
-      - name: push to target 
+      - run: ls -Rt 
       - run: |
          cd ./target/myshuttledev.war/myshuttledev.war \
          git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git \
