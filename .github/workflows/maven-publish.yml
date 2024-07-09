@@ -32,7 +32,6 @@ jobs:
         with:
           name: drop
           path: ./target/myshuttledev.war
-      - name: deploy here
       - run: ls -R
   # # You may pin to the exact commit or the version.
   # # uses: tech-thinker/push-to-repo@a599ed57544bc8348c09cba83a5ffc790b2ead6723456
