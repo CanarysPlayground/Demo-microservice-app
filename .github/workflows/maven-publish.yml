@@ -27,6 +27,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - run: mkdir /home/runner/artifact
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.8
         with:
@@ -37,8 +38,7 @@ jobs:
       - run: |
           git init
           git config --global user.email "mihir11kulkarni@gmail.com"
-          git config --global user.name "Mihir11"
-          git config --global init.defaultBranch main
+          git config --global user.name "Mihir11"  
           git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git
           git add .
           git commit -m "First commit"
