@@ -31,12 +31,12 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: drop
-          path: ./target/myshuttledev.war
-      - run: ls -Rt 
+          path: /home/runner/
+      - run: ls -R
       - run: |
-         cd ./target/myshuttledev.war/myshuttledev.war \
+         cd /home/runner \
          git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git \
-         git add . \
+         # git add . \
          git commit -m "first commit" \
          git branch -M main \
          git push -u origin main \
