@@ -34,9 +34,9 @@ jobs:
           name: drop
           path: /home/artifact/
       - run: ls -R
-      - run: pwd
       # - run: cd /home/runner/artifact
-      - run: sudo cd /home/artifact/
+      - run: cd /home/artifact/
+      - run: pwd
       - run: ls -R
       - run: |
             git init
