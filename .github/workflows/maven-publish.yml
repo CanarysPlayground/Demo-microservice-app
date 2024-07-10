@@ -27,7 +27,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - run: mkdir /home/artifact
+      - run: sudo mkdir /home/artifact
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.8
         with:
