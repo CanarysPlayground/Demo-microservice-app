@@ -35,7 +35,9 @@ jobs:
           path: /home/runner/artifact
       - run: ls -R
       - run: pwd
-      - run: cd /home/runner/artifact
+      # - run: cd /home/runner/artifact
+      - run: cd /home/runner/work/MyShuttle/MyShuttle
+      - run: ls -R
       - run: |
             git init
           # git config --global init.defaultBranch main
