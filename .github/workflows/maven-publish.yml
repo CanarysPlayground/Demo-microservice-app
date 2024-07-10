@@ -36,15 +36,16 @@ jobs:
       - run: ls -R
       - run: cd /home/runner/artifact
       - run: |
-          git config --global init.defaultBranch main
-          git config --global user.email "mihir11kulkarni@gmail.com"
-          git config --global user.name "Mihir11"  
+            git init
+          # git config --global init.defaultBranch main
+          # git config --global user.email "mihir11kulkarni@gmail.com"
+          # git config --global user.name "Mihir11"  
           
-          git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git
-          git add .
-          git commit -m "First commit"
-          git push
-          # git push -u origin main
+          # git remote add origin https://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@github.com/MihirKulkarni11/Deploy.git
+          # git add .
+          # git commit -m "First commit"
+          # git push
+          # # git push -u origin main
 
 
 
