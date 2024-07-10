@@ -27,16 +27,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - run: mkdir /Downloads/artifact
+      - run: mkdir /home/artifact
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.8
         with:
           name: drop
-          path: /Downloads/artifact/
+          path: /home/artifact/
       - run: ls -R
       - run: pwd
       # - run: cd /home/runner/artifact
-      - run: cd /Downloads/artifact/
+      - run: cd /home/artifact/
       - run: ls -R
       - run: |
             git init
