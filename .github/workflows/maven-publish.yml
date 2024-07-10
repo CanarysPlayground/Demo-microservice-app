@@ -35,7 +35,7 @@ jobs:
           path: /home/artifact/
       - run: ls -R
       # - run: cd /home/runner/artifact
-      - run: cd /home/artifact/
+      - run: cd /home/runner/work/MyShuttle/MyShuttle/
       - run: pwd
       - run: ls -R
       - run: |
