@@ -48,14 +48,16 @@ jobs:
         with:
           name: drop
           path: /home/artifact/
-
+          
+      - name: Debug Paths
+        run: ls -al /home/artifact/
       - name: AWS S3 Uploader
         uses: edgeetech/s3-upload-action@1.3.3
         with:
           aws_key_id: ${{ secrets.AWSACCESSKEY }}
           aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
           aws_bucket: githubselfhostedrunner
-          source_dir: /home/artifact/
+          source_dir: /home/artifact/**
 
 
           
