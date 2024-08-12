@@ -68,7 +68,7 @@ jobs:
         uses: usualdesigner/s3-artifact-upload@v1.0.15
         with: 
           bucket-name: githubselfhostedrunner 
-          file: /home/artifact/drop
+          file: /home/artifact/drop/myshuttledev.war
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           
