@@ -39,9 +39,9 @@ jobs:
     name: Deploy Stage
     needs: build
     runs-on: ubuntu-latest
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    # env:
+      # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       # AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
     steps:
       - name: Create Directory for Artifacts
@@ -56,21 +56,39 @@ jobs:
       - name: Debug Downloaded Files
         run: ls -al /home/artifact/drop
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Upload to S3
+        uses: shallwefootball/s3-upload-action@master
+        id: S3
         with:
-            aws-access-key-id: ${{ secrets.AWSACCESSKEY }}
-            aws-secret-access-key: ${{ secrets.AWSSECRETSKEY }}
-            aws-region: us-east-1
-        
-      - name: S3 Artifact Upload
-        uses: usualdesigner/s3-artifact-upload@v1.0.15
+          aws_key_id: ${{secrets.secrets.AWSACCESSKEY}}
+          aws_secret_access_key: ${{secrets.AWSSECRETSKEYY}}
+          aws_bucket: githubselfhostedrunner
+          source_dir: /home/artifact/drop
 
-      - name: Upload artifacts to AWS S3
-        uses: usualdesigner/s3-artifact-upload@main
-        with:
-          bucket-name: ${{ secrets.AWSBUCKET }}
-          file: /home/artifact/drop/myshuttledev.war
+
+
+
+
+
+
+
+
+
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #       aws-access-key-id: ${{ secrets.AWSACCESSKEY }}
+      #       aws-secret-access-key: ${{ secrets.AWSSECRETSKEY }}
+      #       aws-region: us-east-1
+        
+      # - name: S3 Artifact Upload
+      #   uses: usualdesigner/s3-artifact-upload@v1.0.15
+
+      # - name: Upload artifacts to AWS S3
+      #   uses: usualdesigner/s3-artifact-upload@main
+      #   with:
+      #     bucket-name: ${{ secrets.AWSBUCKET }}
+      #     file: /home/artifact/drop/myshuttledev.war
         
 
 
