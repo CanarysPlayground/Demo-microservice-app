@@ -55,6 +55,61 @@ jobs:
 
       - name: Debug Downloaded Files
         run: ls -al /home/artifact/drop
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id: ${{ secrets.AWSACCESSKEY }}
+            aws-secret-access-key: ${{ secrets.AWSSECRETSKEY }}
+            aws-region: us-east-1
+        
+      - name: S3 Artifact Upload
+        uses: usualdesigner/s3-artifact-upload@v1.0.15
+
+      - name: Upload artifacts to AWS S3
+        uses: usualdesigner/s3-artifact-upload@main
+        with:
+          bucket-name: githubselfhostedrunner
+          file: /home/artifact/drop/myshuttledev.war
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         
       # - name: AWS S3 Uploader
       #   uses: oneyedev/aws-deploy-s3@v2
@@ -90,14 +145,14 @@ jobs:
       
       
       
-      - name: Upload to S3
-        uses: edgeetech/s3-upload-action@1.3.3
-        with:
-          aws_key_id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws_bucket: githubselfhostedrunner 
-          source_dir: /home/artifact/drop
-          destination_dir: githubselfhostedrunner/thefolder/
+      # - name: Upload to S3
+      #   uses: edgeetech/s3-upload-action@1.3.3
+      #   with:
+      #     aws_key_id: ${{ env.AWS_ACCESS_KEY_ID }}
+      #     aws_secret_access_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+      #     aws_bucket: githubselfhostedrunner 
+      #     source_dir: /home/artifact/drop
+      #     destination_dir: githubselfhostedrunner/thefolder/
       
       # - name: AWS S3 Uploader
       #   uses: edgeetech/s3-upload-action@1.3.3
