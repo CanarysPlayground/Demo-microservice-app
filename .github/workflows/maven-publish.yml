@@ -62,6 +62,8 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
           aws_bucket: githubselfhostedrunner
           source_dir: /home/artifact/drop
+          destination_dir: s3://githubselfhostedrunner/thefolder/
+          
  
       
       
