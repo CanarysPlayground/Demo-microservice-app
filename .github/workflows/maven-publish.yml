@@ -41,10 +41,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Directory for Artifacts
-        run: sudo mkdir -p /home/artifact/
+        run: sudo mkdir -p /home/artifact/drop
         
       - name: List files in /home/artifact/
-        run: ls -al /home/artifact/
+        run: ls -al /home/artifact/drop
 
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.8
@@ -53,16 +53,39 @@ jobs:
           path: /home/artifact/
           
       - name: Debug Paths
-        run: ls -al /home/artifact/
-     
-      - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@0.5.0
+        run: ls -al /home/artifact/drop
+        
+      - name: AWS S3 Uploader
+        uses: edgeetech/s3-upload-action@1.3.3
         with:
-          args: --delete --exact-timestamps /home/artifact/ s3://githubselfhostedrunner/
-        env:
-            aws_key_id: ${{ secrets.AWSACCESSKEY }}
-            aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
-            AWSBucket: ${{ secrets.AWSBucket }}
+          aws_key_id: ${{ secrets.AWSACCESSKEY }}
+          aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
+          aws_bucket: githubselfhostedrunner
+          source_dir: /home/artifact/drop
+ 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      # - name: Upload to S3
+      #   uses: jakejarvis/s3-sync-action@0.5.0
+      #   with:
+      #     args: --delete --exact-timestamps /home/artifact/ s3://githubselfhostedrunner/
+      #   env:
+      #       aws_key_id: ${{ secrets.AWSACCESSKEY }}
+      #       aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
+      #       AWSBucket: ${{ secrets.AWSBucket }}
       
       
       
