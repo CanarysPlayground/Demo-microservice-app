@@ -51,10 +51,10 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: drop
-          path: /home/artifact/drop
+          path: /home/artifact/droop
 
       - name: Debug Downloaded Files
-        run: ls -al /home/artifact/drop
+        run: ls -al /home/artifact/droop
 
       # - name: Upload to S3
       #   uses: shallwefootball/upload-s3-action@v1.3.3
@@ -77,7 +77,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_SECRET_ACCESS_ID}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_ID}}
           AWS_REGION: 'us-east-1' # 
-          SOURCE_DIR: /home/artifact/drop
+          SOURCE_DIR: /home/artifact/droop
           DEST_DIR: / 
 
 
