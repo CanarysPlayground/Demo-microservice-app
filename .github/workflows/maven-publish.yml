@@ -60,6 +60,8 @@ jobs:
         uses: shallwefootball/upload-s3-action@v1.3.3
         id: S3
         with:
+          echo: ${{secrets.AWS_SECRET_ACCESS_ID}}
+          # echo: ${{secrets.AWS_SECRET_ACCESS_KEY}} 
           aws_key_id: ${{secrets.AWS_SECRET_ACCESS_ID}}
           aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: githubselfhostedrunner
