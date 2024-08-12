@@ -56,27 +56,44 @@ jobs:
       - name: Debug Downloaded Files
         run: ls -al /home/artifact/droop
 
-      # - name: Upload to S3
-      #   uses: shallwefootball/upload-s3-action@v1.3.3
-      #   id: S3
-      #   with:
-      #     echo: ${{secrets.AWS_SECRET_ACCESS_ID}}
-      #     # echo: ${{secrets.AWS_SECRET_ACCESS_KEY}} 
-      #     aws_key_id: ${{secrets.AWS_SECRET_ACCESS_ID}}
-      #     aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-      #     aws_bucket: githubselfhostedrunner
-      #     source_dir: '/home/artifact/drop'
-
-
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@v0.5.1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          AWS_S3_BUCKET: githubselfhostedrunner
-          AWS_ACCESS_KEY_ID: ${{secrets.AWS_SECRET_ACCESS_ID}}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_ID}}
-          AWS_REGION: us-east-1
-          SOURCE_DIR: /home/artifact/droop
-          DEST_DIR: / 
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+
+
+      - name: S3 Artifact Upload
+        uses: usualdesigner/s3-artifact-upload@v1.0.15
+        with: 
+          bucket-name: githubselfhostedrunner 
+          file: /home/artifact/droop
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          
+        
+        
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      # - name: Deploy to S3
+      #   uses: jakejarvis/s3-sync-action@v0.5.1
+      #   with:
+      #     AWS_S3_BUCKET: githubselfhostedrunner
+      #     AWS_ACCESS_KEY_ID: ${{secrets.AWS_SECRET_ACCESS_ID}}
+      #     AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_ID}}
+      #     AWS_REGION: us-east-1
+      #     SOURCE_DIR: /home/artifact/droop
+      #     DEST_DIR: / 
 
 
 
@@ -137,7 +154,21 @@ jobs:
 
 
 
-        
+            # - name: Upload to S3
+      #   uses: shallwefootball/upload-s3-action@v1.3.3
+      #   id: S3
+      #   with:
+      #     echo: ${{secrets.AWS_SECRET_ACCESS_ID}}
+      #     # echo: ${{secrets.AWS_SECRET_ACCESS_KEY}} 
+      #     aws_key_id: ${{secrets.AWS_SECRET_ACCESS_ID}}
+      #     aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      #     aws_bucket: githubselfhostedrunner
+      #     source_dir: '/home/artifact/drop'
+
+
+
+
+      
         
       # - name: AWS S3 Uploader
       #   uses: oneyedev/aws-deploy-s3@v2
