@@ -56,19 +56,29 @@ jobs:
       - name: Debug Downloaded Files
         run: ls -al /home/artifact/drop
 
-      - name: Upload to S3
-        uses: shallwefootball/upload-s3-action@v1.3.3
-        id: S3
+      # - name: Upload to S3
+      #   uses: shallwefootball/upload-s3-action@v1.3.3
+      #   id: S3
+      #   with:
+      #     echo: ${{secrets.AWS_SECRET_ACCESS_ID}}
+      #     # echo: ${{secrets.AWS_SECRET_ACCESS_KEY}} 
+      #     aws_key_id: ${{secrets.AWS_SECRET_ACCESS_ID}}
+      #     aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      #     aws_bucket: githubselfhostedrunner
+      #     source_dir: '/home/artifact/drop'
+
+
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
         with:
-          echo: ${{secrets.AWS_SECRET_ACCESS_ID}}
-          # echo: ${{secrets.AWS_SECRET_ACCESS_KEY}} 
-          aws_key_id: ${{secrets.AWS_SECRET_ACCESS_ID}}
-          aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          aws_bucket: githubselfhostedrunner
-          source_dir: /home/artifact/drop
-
-
-
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: 'githubselfhostedrunner'
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_SECRET_ACCESS_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_ID}}
+          AWS_REGION: 'us-east-1' # 
+          SOURCE_DIR: '/home/artifact/drop' 
+          DEST_DIR: '/' 
 
 
 
