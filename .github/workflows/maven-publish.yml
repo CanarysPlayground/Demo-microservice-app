@@ -3,7 +3,7 @@ name: maven_build
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -60,7 +60,7 @@ jobs:
           aws_key_id: ${{ secrets.AWSACCESSKEY }}
           aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
           aws_bucket: githubselfhostedrunner
-          source_dir: /home/artifact/**
+          source_dir: /home/artifact/
 
 
           
