@@ -55,16 +55,26 @@ jobs:
 
       - name: Debug Downloaded Files
         run: ls -al /home/artifact/drop
-        
-      - name: AWS Deploy S3
+      - name: AWS S3 Uploader
         uses: oneyedev/aws-deploy-s3@v2
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWSACCESSKEY }}
+         SECRET_ACCESS_KEY: ${{ secrets.AWSSECRETSKEY }}
         with:
-          region: us-east-1
-          bucket: githubselfhostedrunner 
-          source: /home/artifact/drop
-          target: githubselfhostedrunner/thefolder
-          aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
+         region: us-east-1
+         bucket: githubselfhostedrunner
+         source: /home/artifact/drop
+         target: githubselfhostedrunner/thefolder
+
+      # - name: AWS Deploy S3
+      #   uses: oneyedev/aws-deploy-s3@v2
+      #   with:
+      #     region: us-east-1
+      #     bucket: githubselfhostedrunner 
+      #     source: /home/artifact/drop
+      #     target: githubselfhostedrunner/thefolder
+      #     aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
+      #     aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
       # -  env:
       #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
