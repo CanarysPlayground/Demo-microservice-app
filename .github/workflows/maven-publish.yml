@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build and Install
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -35,52 +35,52 @@ jobs:
           name: drop
           path: ./target/myshuttledev.war
 
-  deploy:
-    name: Deploy Stage
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: drop
-          path: /home/artifact/
+  # deploy:
+  #   name: Deploy Stage
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download a Build Artifact
+  #       uses: actions/download-artifact@v4.1.8
+  #       with:
+  #         name: drop
+  #         path: /home/artifact/
 
-      - name: Set up Git
-        run: |
-          git config --global user.email "your-email@example.com"
-          git config --global user.name "Your Name"
+  #     - name: Set up Git
+  #       run: |
+  #         git config --global user.email "your-email@example.com"
+  #         git config --global user.name "Your Name"
 
-      - run: cd /home/artifact
+  #     - run: cd /home/artifact
 
-      - name: Initialize Git repository
-        run: git init
+  #     - name: Initialize Git repository
+  #       run: git init
 
-      - name: Check Git status
-        run: git status
+  #     - name: Check Git status
+  #       run: git status
 
-      - name: Add remote repository
-        run: git remote add origin https://github.com/your-username/your-repo.git
+  #     - name: Add remote repository
+  #       run: git remote add origin https://github.com/your-username/your-repo.git
 
-      - name: Configure Git user
-        run: |
-          git config --global user.email "your-email@example.com"
-          git config --global user.name "Your Name"
+  #     - name: Configure Git user
+  #       run: |
+  #         git config --global user.email "your-email@example.com"
+  #         git config --global user.name "Your Name"
 
-      - name: Checkout main branch
-        run: git checkout -b main
+  #     - name: Checkout main branch
+  #       run: git checkout -b main
 
-      - name: Copy artifact to repository
-        run: cp /home/artifact/myshuttledev.war ./myshuttledev.war
+  #     - name: Copy artifact to repository
+  #       run: cp /home/artifact/myshuttledev.war ./myshuttledev.war
 
-      - name: Add artifact to Git
-        run: git add myshuttledev.war
+  #     - name: Add artifact to Git
+  #       run: git add myshuttledev.war
 
-      - name: Commit changes
-        run: git commit -m "Add myshuttledev.war artifact"
+  #     - name: Commit changes
+  #       run: git commit -m "Add myshuttledev.war artifact"
 
-      - name: Push to GitHub repository
-        run: git push origin main
+  #     - name: Push to GitHub repository
+  #       run: git push origin main
   
   
   
