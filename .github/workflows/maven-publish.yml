@@ -63,6 +63,8 @@ jobs:
           bucket: githubselfhostedrunner 
           source: /home/artifact/drop
           target: githubselfhostedrunner/thefolder
+          aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
       # -  env:
       #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
