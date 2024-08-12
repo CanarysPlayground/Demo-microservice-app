@@ -40,18 +40,23 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Create Directory for Artifacts
+        run: sudo mkdir -p /home/artifact/
+
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.8
         with:
           name: drop
           path: /home/artifact/
+
       - name: AWS S3 Uploader
         uses: edgeetech/s3-upload-action@1.3.3
         with:
-           aws_key_id: AKIASLGY452QVRSIEDSQ
-           aws_secret_access_key: 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
-           aws_bucket: githubselfhostedrunner
-           source_dir: /home/artifact/
+          aws_key_id: ${{ secrets.AWSACCESSKEY }}
+          aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
+          aws_bucket: githubselfhostedrunner
+          source_dir: /home/artifact/
+
 
           
 
@@ -64,7 +69,6 @@ jobs:
 
   #     - name: Initialize Git repository
   #       run: git init
-
   #     - name: Check Git status
   #       run: git status
 
