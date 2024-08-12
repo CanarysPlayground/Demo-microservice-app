@@ -60,8 +60,8 @@ jobs:
         uses: shallwefootball/s3-upload-action@master
         id: S3
         with:
-          aws_key_id: ${{secrets.AWSACCESSKEY}}
-          aws_secret_access_key: ${{secrets.AWSSECRETSKEYY}}
+          aws_key_id: ${{secrets.AWS_SECRET_ACCESS_ID}}
+          aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: githubselfhostedrunner
           source_dir: /home/artifact/drop
 
