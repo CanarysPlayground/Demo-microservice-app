@@ -55,12 +55,14 @@ jobs:
       - name: Debug Paths
         run: ls -al /home/artifact/
      
-      - name: Upload file to S3
-        uses: ricardoapaes/action-s3-upload@v1.2.1
-        with: 
-         bucket: githubselfhostedrunner
-         src: /home/artifact/myshuttledev.war
-         
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@0.5.0
+        with:
+          args: --delete --exact-timestamps /home/artifact/ s3://githubselfhostedrunner/
+        env:
+            aws_key_id: ${{ secrets.AWSACCESSKEY }}
+            aws_secret_access_key: ${{ secrets.AWSSECRETSKEY }}
+            AWSBucket: ${{ secrets.AWSBucket }}
       
       
       
