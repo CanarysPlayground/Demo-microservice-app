@@ -53,7 +53,7 @@ jobs:
         run: pip install awscli
       - uses: actions/download-artifact@v3
         with:
-          name: my-artifact
+          name: drop
           path: ./artifact
       - name: upload artifact to s3
         run: aws s3 cp ./artifact s3://actions3forgithub/exe/
