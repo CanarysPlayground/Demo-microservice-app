@@ -43,7 +43,8 @@ jobs:
         with:
           name: drop
           path: ./artifact
-      - run: aws s3 cp ./artifact s3://actions3forgithub/exe/
+      # - run: aws s3 cp ./artifact/ s3://actions3forgithub/exe/
+      - run: ls -la /home/runner/work/MyShuttle/MyShuttle/artifact     
 
  
 
