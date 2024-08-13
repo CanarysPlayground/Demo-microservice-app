@@ -39,38 +39,78 @@ jobs:
     name: Deploy Stage
     needs: build
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+      - name: Install AWS CLI
+        run: pip install awscli
+      - uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+          path: ./artifact
+      - name: upload artifact to s3
+        run: aws s3 cp ./artifact s3://actions3forgithub/exe/
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # from runs on it starts 
     # env:
       # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       # AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
-    steps:
-      - name: Create Directory for Artifacts
-        run: sudo mkdir -p /home/artifact/drop
+    # steps:
+    #   - name: Create Directory for Artifacts
+    #     run: sudo mkdir -p /home/artifact/drop
 
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: drop
-          path: /home/artifact/droop
+    #   - name: Download a Build Artifact
+    #     uses: actions/download-artifact@v4.1.8
+    #     with:
+    #       name: drop
+    #       path: /home/artifact/droop
 
-      - name: Debug Downloaded Files
-        run: ls -al /home/artifact/drop
+    #   - name: Debug Downloaded Files
+    #     run: ls -al /home/artifact/drop
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+    #   - name: Configure AWS credentials
+    #     uses: aws-actions/configure-aws-credentials@v4
+    #     with:
+    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #       aws-region: us-east-1
 
 
-      - name: S3 Artifact Upload
-        uses: usualdesigner/s3-artifact-upload@v1.0.15
-        with: 
-          bucket-name: githubselfhostedrunner 
-          file: /home/artifact/drop/myshuttledev.war
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #   - name: S3 Artifact Upload
+    #     uses: usualdesigner/s3-artifact-upload@v1.0.15
+    #     with: 
+    #       bucket-name: githubselfhostedrunner 
+    #       file: /home/artifact/drop/myshuttledev.war
+    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           
         
         
