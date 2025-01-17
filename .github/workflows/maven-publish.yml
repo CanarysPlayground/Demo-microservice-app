@@ -23,28 +23,28 @@ jobs:
           name: drop
           path: ./target/myshuttledev.war
 
-  deploy:
-    name: Deploy Stage
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - uses: actions/setup-python@v3
-        with:
-          python-version: '3.x'
-      - run: pip install awscli
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: drop
-          path: ./artifact
-      - run: aws s3 cp /home/runner/work/MyShuttle/MyShuttle/artifact/myshuttledev.war s3://actions3forgithub/exe/
-      # - run: ls -la /home/runner/work/MyShuttle/MyShuttle/artifact     
+  # deploy:
+  #   name: Deploy Stage
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #     - uses: actions/setup-python@v3
+  #       with:
+  #         python-version: '3.x'
+  #     - run: pip install awscli
+  #     - name: Download a Build Artifact
+  #       uses: actions/download-artifact@v4.1.8
+  #       with:
+  #         name: drop
+  #         path: ./artifact
+  #     - run: aws s3 cp /home/runner/work/MyShuttle/MyShuttle/artifact/myshuttledev.war s3://actions3forgithub/exe/
+  #     # - run: ls -la /home/runner/work/MyShuttle/MyShuttle/artifact     
 
  
 
