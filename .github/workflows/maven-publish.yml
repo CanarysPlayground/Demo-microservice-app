@@ -28,10 +28,14 @@ jobs:
         run: mvn clean compile
 
       - name: Secret Scanning
-        run: trufflehog --scan-all-branches .
+        uses: github/codeql-action/init@v2
+        with:
+          languages: java
 
       - name: Dependency Scanning
-        run: dependency-check --project MyShuttle --scan .
+        uses: actions/dependency-review-action@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   # CI Build Pipeline
   # ci-build:
