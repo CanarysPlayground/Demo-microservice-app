@@ -26,6 +26,11 @@ jobs:
       - name: Compile Code
         run: mvn clean package
 
+      - name: Amazon ECR "Login" Action for GitHub Actions
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registries: micro-service-application
+          
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
