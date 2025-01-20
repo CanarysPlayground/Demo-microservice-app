@@ -69,11 +69,13 @@ jobs:
           docker tag $ECR_REPOSITORY:$IMAGE_TAG <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
           docker push <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
-  # CD Deployment Pipeline with Approval Gate
+  # CD Deployment Pipeline
   cd-deploy:
     name: CD Deployment
     needs: ci-build
     runs-on: ubuntu-latest
+    environment: 
+      name: production  # This is where GitHub will require manual approval before continuing
     steps:
       - name: Pull Docker Image from Amazon ECR
         run: |
@@ -88,24 +90,5 @@ jobs:
           kubectl apply -f k8s/service.yaml
 
       - name: Approval Gate
-        environment:
-          name: production  # Specify your environment name with approval gate
         run: |
           echo "Waiting for manual approval..."
-
-  # Manual Approval Workflow (Approval Gate)
-  approval-gate:
-    name: Approval Gate Workflow
-    on:
-      workflow_run:
-        workflows: ["Microservice Application Workflow"]
-        types:
-          - completed
-
-    jobs:
-      approval:
-        runs-on: ubuntu-latest
-        steps:
-          - name: Approval Check
-            run: |
-              echo "Waiting for manual approval..."
