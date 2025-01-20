@@ -80,13 +80,8 @@ jobs:
         run: |
           mkdir -p ${{github.workspace}}/.kube
           echo "${{secrets.KUBECONFIG}}" > ${{github.workspace}}/.kube/config
-          
-      - name: Download kubectl binaries
-        run: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
-      - name: Install Kubectl
-        run: sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
+      - run: pwd && ls -la && ls .kube
           
       - name: Deploy to Amazon EKS
         env:
