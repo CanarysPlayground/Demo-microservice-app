@@ -9,13 +9,13 @@ on:
       - master
   workflow_dispatch:
 
+env:
+  IMAGE_TAG: "latest"
+
 jobs:
   ci-build:
     name: CI Build
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: "latest"
-      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -49,37 +49,41 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: micro-service-application
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ${{github.workspace}}/src/Dockerfile ${{github.workspace}}
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG 
 
-
-      # - name: Build and Push Docker Image
-      #   env:
-      #     ECR_REPOSITORY: micro-service-application
-      #     IMAGE_TAG: ${{ github.sha }}
-      #   run: |
-      #     docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-      #     docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-      #     docker push ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-
-  # CD Deployment Pipeline
   cd-deploy:
     name: CD Deployment
     needs: ci-build
     runs-on: ubuntu-latest
     environment: 
-      name: production  # This references the production environment created above
+      name: production  
     steps:
-      - name: Pull Docker Image from Amazon ECR
-        run: |
-          aws ecr get-login-password --region ${{vars.AWS_REGION}} | docker login --username AWS --password-stdin ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com
-          docker pull ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/myshuttle-repo:${{ github.sha }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{vars.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{vars.AWS_SECRET_ACCESS_KEY}}
 
+      - name: Amazon ECR "Login" Action for GitHub Actions
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registries: 590183892288
+          
+      - name: Pull Docker Image from Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: micro-service-application
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        run: |
+          docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          
       - name: Deploy to Amazon EKS
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
-          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/pod.yaml
           kubectl apply -f k8s/service.yaml
