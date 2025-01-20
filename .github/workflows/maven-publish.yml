@@ -46,6 +46,7 @@ jobs:
         
   ci-build:
     name: CI Build
+    needs: analyze
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -70,7 +71,7 @@ jobs:
       - name: Amazon ECR "Login" Action for GitHub Actions
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          registries: ${{secreats.REGESTRY}}
+          registries: ${{secrets.REGESTRY}}
           
       - name: Login to Amazon ECR
         id: login-ecr
@@ -105,7 +106,7 @@ jobs:
       - name: Amazon ECR "Login" Action for GitHub Actions
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          registries: ${{secreats.REGESTRY}}
+          registries: ${{secrets.REGESTRY}}
           
       - name: Import Kubeconfig
         run: |
