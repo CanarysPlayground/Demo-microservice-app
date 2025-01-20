@@ -80,6 +80,6 @@ jobs:
           
       - name: Deploy to Amazon EKS
         env:
-          KUBECONFIG: ${{github.workspace}}/.kube/config
+          KUBECONFIG: ${{github.workspace}}/.kube/config ${{github.workspace}}
         run: |
           kubectl apply -f ${{github.workspace}}/manifestfile.yml
