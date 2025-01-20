@@ -39,7 +39,7 @@ jobs:
       - name: Amazon ECR "Login" Action for GitHub Actions
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          registries: 590183892288
+          registries: ${{secreats.REGESTRY}}
           
       - name: Login to Amazon ECR
         id: login-ecr
@@ -74,14 +74,12 @@ jobs:
       - name: Amazon ECR "Login" Action for GitHub Actions
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          registries: 590183892288
+          registries: ${{secreats.REGESTRY}}
           
       - name: Import Kubeconfig
         run: |
           mkdir -p ${{github.workspace}}/.kube
           echo "${{secrets.KUBECONFIG}}" > ${{github.workspace}}/.kube/config
-
-      - run: pwd && ls -la && ls .kube
           
       - name: Deploy to Amazon EKS
         env:
