@@ -51,7 +51,7 @@ jobs:
           REPOSITORY: micro-service-application
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ${{github.workspace}}/src/Dockerfile
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ${{github.workspace}}/src/Dockerfile ${{github.workspace}}
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG 
 
 
