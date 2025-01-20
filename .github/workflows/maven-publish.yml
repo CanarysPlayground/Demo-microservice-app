@@ -85,6 +85,6 @@ jobs:
           
       - name: Deploy to Amazon EKS
         env:
-          KUBECONFIG: ${{github.workspace}}/.kube/config ${{github.workspace}}
+          KUBECONFIG: ${{github.workspace}}/.kube/config 
         run: |
-          kubectl apply -f ${{github.workspace}}/Demo-microservice-app/manifestfile.yml
+          kubectl apply -f ${{github.workspace}}/manifestfile.yml
