@@ -50,7 +50,7 @@ jobs:
           context: src/
           file: Dockerfile
           push: true
-          tags: $IMAGE_TAG
+          tags: ${{env.IMAGE_TAG}}
 
 
       # - name: Build and Push Docker Image
