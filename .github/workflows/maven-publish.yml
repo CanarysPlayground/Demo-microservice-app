@@ -13,6 +13,9 @@ jobs:
   ci-build:
     name: CI Build
     runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: "latest"
+      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -41,14 +44,23 @@ jobs:
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and Push Docker Image
-        env:
-          ECR_REPOSITORY: myshuttle-repo
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v6.12.0
+        with:
+          context: src/
+          file: Dockerfile
+          push: true
+          tags: $IMAGE_TAG
+
+
+      # - name: Build and Push Docker Image
+      #   env:
+      #     ECR_REPOSITORY: micro-service-application
+      #     IMAGE_TAG: ${{ github.sha }}
+      #   run: |
+      #     docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+      #     docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+      #     docker push ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
   # CD Deployment Pipeline
   cd-deploy:
