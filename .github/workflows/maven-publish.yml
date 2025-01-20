@@ -82,4 +82,4 @@ jobs:
         env:
           KUBECONFIG: ${{github.workspace}}/.kube/config
         run: |
-          kubectl apply -f manifestfile.yml
+          kubectl apply -f ${{github.workspace}}/manifestfile.yml
