@@ -73,9 +73,13 @@ jobs:
         with:
           registries: 590183892288
           
+      - name: Import Kubeconfig
+        run: |
+          mkdir -p ${{github.workspace}}/.kube
+          echo "${{secrets.KUBECONFIG}}" > ${{github.workspace}}/.kube/config
           
       - name: Deploy to Amazon EKS
         env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG: ${{github.workspace}}/.kube/config
         run: |
           kubectl apply -f manifestfile.yml
