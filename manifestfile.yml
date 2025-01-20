@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: myshuttle-container
-        image: myshuttle:latest
+        image: 590183892288.dkr.ecr.us-east-1.amazonaws.com/micro-service-application:latest
         ports:
         - containerPort: 8080
         env:
