@@ -73,13 +73,6 @@ jobs:
         with:
           registries: 590183892288
           
-      - name: Pull Docker Image from Amazon ECR
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: micro-service-application
-          IMAGE_TAG: ${{ env.IMAGE_TAG }}
-        run: |
-          docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
           
       - name: Deploy to Amazon EKS
         env:
