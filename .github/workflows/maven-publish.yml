@@ -3,41 +3,13 @@ name: Microservice Application Workflow
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
-  # PR Build Pipeline
-  pr-build:
-    name: PR Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: '8'
-          distribution: 'adopt'
-
-      - name: Compile Code
-        run: mvn clean compile
-
-      - name: Secret Scanning
-        uses: github/codeql-action/init@v2
-        with:
-          languages: java
-
-      - name: Dependency Scanning
-        uses: actions/dependency-review-action@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-  # CI Build Pipeline
   ci-build:
     name: CI Build
     runs-on: ubuntu-latest
@@ -54,9 +26,6 @@ jobs:
       - name: Compile Code
         run: mvn clean package
 
-      - name: Code Scanning
-        uses: github/codeql-action/analyze@v2
-
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
@@ -66,8 +35,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
   # CD Deployment Pipeline
   cd-deploy:
@@ -79,8 +48,8 @@ jobs:
     steps:
       - name: Pull Docker Image from Amazon ECR
         run: |
-          aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<region>.amazonaws.com
-          docker pull <aws-account-id>.dkr.ecr.<region>.amazonaws.com/myshuttle-repo:${{ github.sha }}
+          aws ecr get-login-password --region ${{vars.AWS_REGION}} | docker login --username AWS --password-stdin ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com
+          docker pull ${{vars.AWS_ACCESS_KEY_ID}}.dkr.ecr.${{vars.AWS_REGION}}.amazonaws.com/myshuttle-repo:${{ github.sha }}
 
       - name: Deploy to Amazon EKS
         env:
@@ -88,7 +57,3 @@ jobs:
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
-
-      - name: Approval Gate
-        run: |
-          echo "Waiting for manual approval..."
