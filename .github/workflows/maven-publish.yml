@@ -38,56 +38,74 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   # CI Build Pipeline
-  # ci-build:
-  #   name: CI Build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  ci-build:
+    name: CI Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Set up Java
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         java-version: '8'
-  #         distribution: 'adopt'
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'adopt'
 
-  #     - name: Compile Code
-  #       run: mvn clean package
+      - name: Compile Code
+        run: mvn clean package
 
-  #     - name: Code Scanning
-  #       uses: github/codeql-action/analyze@v2
+      - name: Code Scanning
+        uses: github/codeql-action/analyze@v2
 
-  #     - name: Log in to Amazon ECR
-  #       uses: aws-actions/amazon-ecr-login@v2
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
 
-  #     - name: Build and Push Docker Image
-  #       env:
-  #         ECR_REPOSITORY: myshuttle-repo
-  #         IMAGE_TAG: ${{ github.sha }}
-  #       run: |
-  #         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-  #         docker tag $ECR_REPOSITORY:$IMAGE_TAG <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-  #         docker push <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Build and Push Docker Image
+        env:
+          ECR_REPOSITORY: myshuttle-repo
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push <aws-account-id>.dkr.ecr.<region>.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
-  # # CD Deployment Pipeline
-  # cd-deploy:
-  #   name: CD Deployment
-  #   needs: ci-build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Pull Docker Image from Amazon ECR
-  #       run: |
-  #         aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<region>.amazonaws.com
-  #         docker pull <aws-account-id>.dkr.ecr.<region>.amazonaws.com/myshuttle-repo:${{ github.sha }}
+  # CD Deployment Pipeline with Approval Gate
+  cd-deploy:
+    name: CD Deployment
+    needs: ci-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Docker Image from Amazon ECR
+        run: |
+          aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<region>.amazonaws.com
+          docker pull <aws-account-id>.dkr.ecr.<region>.amazonaws.com/myshuttle-repo:${{ github.sha }}
 
-  #     - name: Deploy to Amazon EKS
-  #       env:
-  #         KUBECONFIG: ${{ secrets.KUBECONFIG }}
-  #       run: |
-  #         kubectl apply -f k8s/deployment.yaml
-  #         kubectl apply -f k8s/service.yaml
+      - name: Deploy to Amazon EKS
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
 
-  #     - name: Approval Gate
-  #       if: ${{ github.event.inputs.approval_required }}
-  #       run: |
-  #         echo "Waiting for manual approval..."
+      - name: Approval Gate
+        environment:
+          name: production  # Specify your environment name with approval gate
+        run: |
+          echo "Waiting for manual approval..."
+
+  # Manual Approval Workflow (Approval Gate)
+  approval-gate:
+    name: Approval Gate Workflow
+    on:
+      workflow_run:
+        workflows: ["Microservice Application Workflow"]
+        types:
+          - completed
+
+    jobs:
+      approval:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Approval Check
+            run: |
+              echo "Waiting for manual approval..."
