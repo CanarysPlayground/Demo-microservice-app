@@ -75,7 +75,7 @@ jobs:
     needs: ci-build
     runs-on: ubuntu-latest
     environment: 
-      name: production  # This is where GitHub will require manual approval before continuing
+      name: production  # This references the production environment created above
     steps:
       - name: Pull Docker Image from Amazon ECR
         run: |
