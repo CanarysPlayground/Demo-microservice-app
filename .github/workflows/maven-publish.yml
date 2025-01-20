@@ -85,5 +85,4 @@ jobs:
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
-          kubectl apply -f k8s/pod.yaml
-          kubectl apply -f k8s/service.yaml
+          kubectl apply -f manifestfile.yml
