@@ -25,7 +25,14 @@ jobs:
 
       - name: Compile Code
         run: mvn clean package
-
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: aws-east-1
+          aws-access-key-id: ${{vars.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{vars.AWS_SECRET_ACCESS_KEY}}
+    
       - name: Amazon ECR "Login" Action for GitHub Actions
         uses: aws-actions/amazon-ecr-login@v2
         with:
